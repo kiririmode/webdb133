@@ -1,0 +1,7 @@
+stages:
+  - sample
+
+shellscript:
+  stage: sample
+  script:
+    - echo "Bash version ${BASH_VERSION}"
