@@ -1,0 +1,44 @@
+name: Static Analysis (Java)
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - java/webdb/src/main/**.java
+
+jobs:
+  Spotbugs:
+    name: SpotBugs(Java)
+    runs-on: ubuntu-22.04
+    env:
+      REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17.0
+          distribution: corretto
+
+      - name: Cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: pom.xml-${{ hashFiles('java/webdb/pom.xml') }}
+
+      - name: Set up reviewdog
+        uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: v0.14.1
+
+      - name: Test
+        run: mvn -B test
+        working-directory: java/webdb
+
+      - name: SpotBugs report
+        run: scripts/spotbugs_report.sh
+
+      - name: Checkstyle report
+        run: scripts/checkstyle_report.sh
