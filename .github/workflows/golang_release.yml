@@ -20,6 +20,7 @@ jobs:
 
       - name: Build
         run: make build
+        working-directory: go-sample
 
       - name: Release
         uses: softprops/action-gh-release@v1
