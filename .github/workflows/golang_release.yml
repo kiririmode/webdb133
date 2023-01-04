@@ -1,0 +1,27 @@
+name: Golang Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v[0-9]{8}"
+
+jobs:
+  release:
+    name: Golang Release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install tools
+        run: make install
+        working-directory: go-sample
+
+      - name: Build
+        run: make Build
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: go-sample/dist/*
