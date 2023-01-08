@@ -21,6 +21,10 @@ jobs:
       - name: Add Path
         run: echo "$HOME"/go/bin >> $GITHUB_PATH
 
+      - name: License check
+        run: make license-check
+        working-directory: go-sample
+
       - name: Build
         run: make build
         working-directory: go-sample

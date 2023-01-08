@@ -1,6 +1,11 @@
 NAME     := webdb-sample
-VERSION  := v20230104
+VERSION  := $(shell git describe --tags --always --abbrev=0)
 LDFLAGS  := "-s -w"
+TARGET   := github.com/kiririmode/webdb133/go-sample
+
+.PHONY: license-check
+license-check:
+	go-licenses check $(TARGET)
 
 .PHONY: credits
 credits:
