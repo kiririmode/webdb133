@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - "v[0-9]{8}"
+      - "v*"
 
 jobs:
   release:
@@ -17,6 +17,9 @@ jobs:
       - name: Install tools
         run: make install
         working-directory: go-sample
+
+      - name: Add Path
+        run: echo "$HOME"/go/bin >> $GITHUB_PATH
 
       - name: Build
         run: make build
