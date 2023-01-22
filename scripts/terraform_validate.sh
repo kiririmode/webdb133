@@ -12,13 +12,30 @@ main() {
 
         terraform -chdir="$dir" init -backend=false
         terraform -chdir="$dir" validate -json |
-            jq -r '.diagnostics[] | [.range.filename, .range.start.line, .range.start.column, .severity + ": " + .detail] | @tsv' |
+            jq -r '.diagnostics[] | [
+                .range.filename,
+                .range.start.line,
+                .range.start.column,
+                .severity + ": " + .detail
+            ] | @tsv' |
             sed -e "s|^|${relative_dir}/|" |
             tr '\t' ':' |
-            reviewdog -efm="%f:%l:%c:%m" -tee -fail-on-error -reporter=github-pr-review -name="Terraform Validate"
+            reviewdog \
+                -efm="%f:%l:%c:%m" \
+                -tee \
+                -fail-on-error \
+                -reporter=github-pr-review \
+                -name="Terraform Validate"
 
         ((error_count += $?))
-    done < <(find "${base_dir}/terraform" -type f -name '*.tf' -printf "%h\n" | sort | uniq)
+    done < <(
+        find "${base_dir}/terraform" \
+            -type f \
+            -name '*.tf' \
+            -printf "%h\n" |
+            sort |
+            uniq
+    )
     return $error_count
 }
 
