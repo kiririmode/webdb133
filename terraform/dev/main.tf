@@ -19,6 +19,7 @@ provider "aws" {
 }
 
 module "bucket" {
+  # hoge
   source = "../modules/bucket/"
 
   bucket_name = "kiririmode-webdb-dev"
