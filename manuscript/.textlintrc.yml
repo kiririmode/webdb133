@@ -1,0 +1,22 @@
+filters:
+  comments: true
+  allowlist:
+    allow:
+      - TODO
+      - ──
+      - ◆WDB◆
+      - Path
+      - 標準入出力経由
+      - 他言語
+rules:
+  prh:
+    rulePaths:
+      #      - ./WEB+DB_PRESS.yml
+      - ./prh.yml
+  preset-ja-technical-writing:
+    sentence-length:
+      max: 170
+    max-ten:
+      max: 4
+    arabic-kanji-numbers: false
+  preset-ja-spacing: true
