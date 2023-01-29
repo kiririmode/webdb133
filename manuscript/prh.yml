@@ -1,0 +1,37 @@
+rules:
+  - pattern: /Bourne-Again/i
+    expected: Bourne Again
+  - pattern:
+      - Spotbugs
+      - spotbugs
+    expected: SpotBugs
+  - pattern: /PullRequest/i
+    expected: Pull Request
+  - pattern: 良い
+    expected: よい
+  - pattern: (?!え)方が
+    expected: ほうが
+  - pattern: 時に
+    expected: ときに
+  - pattern: 等
+    expected: など
+  - pattern: 使ってくる
+    expected: 使いまし
+  - pattern: (?<!b)ash
+    expected: Ash
+  - pattern: bash
+    expected: Bash
+  - pattern: zsh
+    expected: Zsh
+  - pattern: /docker image/i
+    expected: Dockerイメージ
+  - pattern: 皆さん
+    expected: みなさん
+  - pattern: 易(い|く)
+    expected: やす$1
+  - pattern: shellcheck
+    expected: ShellCheck
+  - pattern: の通り
+    expected: のとおり
+  - pattern: ご参照
+    expected: 参照

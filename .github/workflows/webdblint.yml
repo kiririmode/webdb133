@@ -1,0 +1,57 @@
+name: WEB+DB Press Lint
+on:
+  pull_request:
+    paths:
+      - "manuscript/*.md"
+
+jobs:
+  textlint:
+    name: Lints
+    runs-on: ubuntu-22.04
+    env:
+      REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up node/npm
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.4.0"
+          cache: "npm"
+          cache-dependency-path: manuscript/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          npm clean-install --prefix manuscript 2>&1 | tee /dev/stderr | test $(grep --count -E '(Error:|gyp ERR!)') -le 0
+
+      - name: Set up reviewdog
+        uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: v0.14.1
+
+      - name: Textlint
+        run: |
+          npx textlint *.md -f checkstyle | reviewdog -tee -fail-on-error -reporter=github-pr-review -f=checkstyle -name="textlint (WEB+DB Press)"
+        working-directory: manuscript
+
+  sectionlimit:
+    name: Section Level
+    runs-on: ubuntu-22.04
+    env:
+      REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up reviewdog
+        uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: v0.14.1
+
+      - name: Section level should be less than 4
+        run: >-
+          grep -n '^####' manuscript/*.md
+          | cut -d: -f1-2
+          | sed -e 's/$/:1:セクションのレベルは３階層までです/'
+          | reviewdog -efm="%f:%l:%c:%m" -tee -fail-on-error -reporter=github-pr-review  -name="section level checker"
