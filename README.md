@@ -75,3 +75,7 @@ Goで作成したプログラムのライセンス収集のワークフロー、
 - [スクリプト](scripts/make_credits.sh)
 
 実際に、利用ライブラリのライセンスを表記したサンプルは[Releases](https://github.com/kiririmode/webdb133/releases)よりご確認いただけます。
+
+# お問い合わせ
+
+技術評論社様の[問い合わせフォーム](https://gihyo.jp/site/inquiry/book?ISBN=978-4-297-13370-2)からお願いします
